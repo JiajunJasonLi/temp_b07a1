@@ -1,8 +1,7 @@
 package com.bank.user;
 
+import com.bank.databasehelper.DatabaseSelectHelper;
 import com.bank.security.PasswordHelpers;
-import com.bank.databasehelper.DatabaseDriverHelper;
-import com.bank.database.DatabaseSelector;
 
 public abstract class User {
   private int id;
@@ -79,12 +78,13 @@ public abstract class User {
    */
   public final boolean authenticate(String password) {
     
-    // Create the database connection, if one does not already exist
-    DatabaseDriverHelper databaseDriverHelper = new DatabaseDriverHelper();
-    Connection connection = databaseDriverHelper.connectOrCreateDataBase();
-    
+    // Get user ID
     int userId = this.getId();
-    String storedPassword = DatabaseSelector.getPassword();
+    
+    // Get the stored password for this user
+    String storedPassword = DatabaseSelectHelper.getPassword(userId);
+    
+    // Check if the passwords match
     boolean authenticated = PasswordHelpers.comparePassword(storedPassword, password);
     
     return authenticated;
