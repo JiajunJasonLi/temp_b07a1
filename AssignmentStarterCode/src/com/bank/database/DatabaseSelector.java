@@ -129,7 +129,35 @@ public class DatabaseSelector {
     return results.getInt("TYPE");
     
   }
+  
+  /**
+   * Return the accounttype name given an accountTypeId.
+   * @param accountTypeId the id of the account type.
+   * @param connection the connection to the database.
+   * @return The name of the account type.
+   * @throws SQLException thrown if something goes wrong.
+   */
+  protected static String getAccountTypeName(int accountTypeId, Connection connection) 
+      throws SQLException {
+    String sql = "SELECT NAME FROM ACCOUNTTYPES WHERE ID = ?";
+    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+    preparedStatement.setInt(1, accountTypeId);
+    ResultSet results = preparedStatement.executeQuery();
+    return results.getString("NAME");
+  }
  
+  /**
+   * Return all data found within the AccountTypes table.
+   * @param connection the connection to the database.
+   * @return a result set of all rows in the table.
+   * @throws SQLException thrown if there is an issue.
+   */
+  protected static ResultSet getAccountTypesId(Connection connection) throws SQLException {
+    String sql = "SELECT ID FROM ACCOUNTTYPES";
+    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+    return preparedStatement.executeQuery();
+  }
+  
   /**
    * get the role of the given user.
    * @param userId the id of the user.

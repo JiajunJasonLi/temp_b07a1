@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bank.database.DatabaseDriver;
@@ -19,6 +20,17 @@ public class DatabaseSelectHelper extends DatabaseSelector {
     String role = DatabaseSelector.getRole(id, connection);
     connection.close();
     return role;
+  }
+  
+  public static List<Integer> getRoles() {
+    Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
+    ResultSet results = DatabaseSelector.getRoles(connection);
+    List<Integer> ids = new ArrayList<>();
+    while (results.next()) {
+      System.out.println(results.getInt("ID"));
+    }
+    return ids;
+    
   }
    
   public static String getPassword(int userId)  {
@@ -88,6 +100,24 @@ public class DatabaseSelectHelper extends DatabaseSelector {
     BigInteger interestRate = DatabaseSelector.getInterestRate(accountType, connection);
     connection.close();
     return interestRate;
+  }
+  
+  public static List<Integer> getAccountTypesIds() {
+    //TODO Implement this method to get all account Type Id's stored in the database
+    Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
+    ResultSet results = DatabaseSelector.getAccountTypesId(connection);
+    List<Integer> ids = new ArrayList<>();
+    while (results.next()) {
+      System.out.println(results.getInt("ID"));
+    }
+    return ids;
+  }
+  
+  public static String getAccountTypeName(int accountTypeId) {
+    //TODO Implement this method to get the account Type Names
+    Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
+    DatabaseSelector.getAccountTypeName(accountTypeId, connection);
+    connection.close();
   }
 
 }

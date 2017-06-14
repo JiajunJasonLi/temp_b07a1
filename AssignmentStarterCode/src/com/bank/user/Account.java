@@ -35,6 +35,14 @@ public abstract class Account {
   }
   
   /**
+   * Sets the name of the account, eg. "Mary's Savings Account".
+   * @param name The name to be set.
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+  
+  /**
    * Get the amount of balance in the account.
    * @return balance The account balance.
    */
