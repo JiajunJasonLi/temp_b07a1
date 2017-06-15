@@ -1,10 +1,10 @@
 package com.bank.databasehelper;
 
+import com.bank.database.DatabaseUpdater;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 
-import com.bank.database.DatabaseDriver;
-import com.bank.database.DatabaseUpdater;
 
 public class DatabaseUpdateHelper extends DatabaseUpdater{
   
