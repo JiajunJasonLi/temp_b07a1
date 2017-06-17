@@ -1,6 +1,9 @@
 package com.bank.databasehelper;
 
 import com.bank.database.DatabaseUpdater;
+import com.bank.exceptions.ConnectionFailedException;
+import com.bank.exceptions.IllegalAddressException;
+import com.bank.exceptions.IllegalInterestRateException;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -14,8 +17,9 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
    * @param name The name of the new role.
    * @param id The ID of the user to update.
    * @return true If the update was successful.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean updateRoleName(String name, int id) {
+  public static boolean updateRoleName(String name, int id) throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -32,8 +36,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
         return false;
       }
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -42,8 +45,9 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
    * @param name The new name for the user.
    * @param id The ID of the user to update.
    * @return true If the update was successful.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean updateUserName(String name, int id) {
+  public static boolean updateUserName(String name, int id) throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -52,8 +56,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
       connection.close();
       return complete;
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -62,8 +65,9 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
    * @param age The new age of the user.
    * @param id The ID of the user.
    * @return true If the update was successful.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean updateUserAge(int age, int id) {
+  public static boolean updateUserAge(int age, int id) throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
 
@@ -72,8 +76,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
       connection.close();
       return complete;
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -82,8 +85,9 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
    * @param roleId The new role ID.
    * @param id The ID of the user to update.
    * @return true If the update was successful.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean updateUserRole(int roleId, int id) {
+  public static boolean updateUserRole(int roleId, int id) throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -100,8 +104,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
         return false;
       }
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -110,26 +113,32 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
    * @param address The new address of the user.
    * @param id The ID of the user to update.
    * @return true If the update was successful.
+   * @throws IllegalAddressException If an address not meeting input requirements is entered.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean updateUserAddress(String address, int id) {
+  public static boolean updateUserAddress(String address, int id) 
+      throws IllegalAddressException, ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate address
     boolean validAddress = DatabaseValidationHelper.validateUserAddress(address);
     
-    try {
-      if (validAddress) {
-        boolean complete = DatabaseUpdater.updateUserAddress(address, id, connection);
-        connection.close();
-        return complete;
-      } else {
-        connection.close();
-        return false;
+    if (!validAddress) {
+      throw new IllegalAddressException();
+    } else {
+      try {
+        if (validAddress) {
+          boolean complete = DatabaseUpdater.updateUserAddress(address, id, connection);
+          connection.close();
+          return complete;
+        } else {
+          connection.close();
+          return false;
+        }
+      } catch (SQLException e) {
+        throw new ConnectionFailedException();
       }
-    } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
     }
   }
 
@@ -186,8 +195,9 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
    * @param typeId The ID of the account type.
    * @param id The ID of the account to update.
    * @return true If the update was successful.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean updateAccountType(int typeId, int id) {
+  public static boolean updateAccountType(int typeId, int id) throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -204,8 +214,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
         return false;
       }
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -214,8 +223,10 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
    * @param name The new name of the account type.
    * @param id The ID of the account type to update.
    * @return true If the update was successful.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean updateAccountTypeName(String name, int id) {
+  public static boolean updateAccountTypeName(String name, int id) 
+      throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -233,8 +244,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
         return false;
       }
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -243,8 +253,11 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
    * @param interestRate The new interest rate of the account type.
    * @param id The ID of the account type to update.
    * @return true If the update was successful.
+   * @throws IllegalInterestRateException If the interest rate is not within the limit.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean updateAccountTypeInterestRate(BigDecimal interestRate, int id) {
+  public static boolean updateAccountTypeInterestRate(BigDecimal interestRate, int id) 
+      throws IllegalInterestRateException, ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -252,19 +265,22 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     boolean validInterestRate = DatabaseValidationHelper.validateAccountInterestRate(interestRate);
     boolean validAccountTypeId = DatabaseValidationHelper.validateAccountTypeId(id);
     
-    try {
-      if (validInterestRate && validAccountTypeId) {
-        boolean complete = 
-            DatabaseUpdater.updateAccountTypeInterestRate(interestRate, id, connection);
-        connection.close();
-        return complete;
-      } else {
-        connection.close();
-        return false;
+    if (!validInterestRate) {
+      throw new IllegalInterestRateException();
+    } else {
+      try {
+        if (validInterestRate && validAccountTypeId) {
+          boolean complete = 
+              DatabaseUpdater.updateAccountTypeInterestRate(interestRate, id, connection);
+          connection.close();
+          return complete;
+        } else {
+          connection.close();
+          return false;
+        }
+      } catch (SQLException e) {
+        throw new ConnectionFailedException();
       }
-    } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
     }
   }
 }

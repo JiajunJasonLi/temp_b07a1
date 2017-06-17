@@ -14,29 +14,21 @@ import java.util.List;
 
 public class DatabaseSelectHelper extends DatabaseSelector {
   
-  /**
-   * Gets the role of the user with the given ID.
-   * @param id The ID of the user to examine
-   * @return
-   * @throws SQLException
-   */
-  public static String getRole(int id) throws SQLException {
+  public static String getRole(int id) {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
-    // Validate id
-    boolean validId = false;
-    
-    // TODO: id validation
+    String role;
 
-    if (validId) {
-      String role = DatabaseSelector.getRole(id, connection);
+    try {
+      role = DatabaseSelector.getRole(id, connection);
+    } catch (SQLException e) {
+      role = null;
+    } finally {
       connection.close();
-      return role;
-    } else {
-      connection.close();
-      return "-1";
     }
+    
+    return role;
   }
   
   public static List<Integer> getRoles() {

@@ -1,6 +1,7 @@
 package com.bank.databasehelper;
 
 import com.bank.database.DatabaseInserter;
+import com.bank.exceptions.ConnectionFailedException;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -15,8 +16,10 @@ public class DatabaseInsertHelper extends DatabaseInserter {
    * @param balance How much money is in the account
    * @param typeId Value corresponding to the account type (type must exist)
    * @return newAccountId The new account's ID if the account is successfully added, -1 otherwise
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static int insertAccount(String name, BigDecimal balance, int typeId) {
+  public static int insertAccount(String name, BigDecimal balance, int typeId) 
+      throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -34,8 +37,7 @@ public class DatabaseInsertHelper extends DatabaseInserter {
         return -1;
       }
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return -1;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -44,8 +46,10 @@ public class DatabaseInsertHelper extends DatabaseInserter {
    * @param name The name of the new type
    * @param interestRate The interest rate to be associated with the account (>= 0 and < 1)
    * @return True if the type is successfully created
+   * @throws ConnectionFailedException If the database connection fails.
    */
-  public static boolean insertAccountType(String name, BigDecimal interestRate) {
+  public static boolean insertAccountType(String name, BigDecimal interestRate) 
+      throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -64,8 +68,7 @@ public class DatabaseInsertHelper extends DatabaseInserter {
         return false;
       }
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -77,9 +80,10 @@ public class DatabaseInsertHelper extends DatabaseInserter {
    * @param roleId Value corresponding to the user's role (eg. employee, customer)
    * @param password The user's password
    * @return newUserId The new user's ID if the user is successfully added, -1 otherwise
+   * @throws ConnectionFailedException If database connection fails.
    */
   public static int insertNewUser(String name, 
-      int age, String address, int roleId, String password) {
+      int age, String address, int roleId, String password) throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -98,8 +102,7 @@ public class DatabaseInsertHelper extends DatabaseInserter {
         return -1;
       }
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return -1;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -107,8 +110,9 @@ public class DatabaseInsertHelper extends DatabaseInserter {
    * Creates a new role in the database.
    * @param role The name of the role; must be one of the pre-defined roles.
    * @return true If the role is successfully created.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean insertRole(String role) {
+  public static boolean insertRole(String role) throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -126,8 +130,7 @@ public class DatabaseInsertHelper extends DatabaseInserter {
         return false;
       }
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
   
@@ -136,8 +139,10 @@ public class DatabaseInsertHelper extends DatabaseInserter {
    * @param userId The user the account will belong to
    * @param accountId The account to be registered
    * @return true If the account is successfully registered
+   * @throws ConnectionFailedException If database connection fails.
    */
-  public static boolean insertUserAccount(int userId, int accountId) {
+  public static boolean insertUserAccount(int userId, int accountId) 
+      throws ConnectionFailedException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
@@ -146,8 +151,7 @@ public class DatabaseInsertHelper extends DatabaseInserter {
       connection.close();
       return complete;
     } catch (SQLException e) {
-      System.out.println("Database connection failed.");
-      return false;
+      throw new ConnectionFailedException();
     }
   }
 }
