@@ -1,25 +1,42 @@
 package com.bank.databasehelper;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bank.database.DatabaseDriver;
 import com.bank.database.DatabaseInserter;
 import com.bank.database.DatabaseSelector;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseSelectHelper extends DatabaseSelector {
-    
-  public static String getRole(int id)  {
-    //TODO Implement this method as stated on the assignment sheet (Strawberry)
-    //hint: You should be using these three lines in your final code
+  
+  /**
+   * Gets the role of the user with the given ID.
+   * @param id The ID of the user to examine
+   * @return
+   * @throws SQLException
+   */
+  public static String getRole(int id) throws SQLException {
+    // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
-    String role = DatabaseSelector.getRole(id, connection);
-    connection.close();
-    return role;
+    
+    // Validate id
+    boolean validId = false;
+    
+    // TODO: id validation
+
+    if (validId) {
+      String role = DatabaseSelector.getRole(id, connection);
+      connection.close();
+      return role;
+    } else {
+      connection.close();
+      return "-1";
+    }
   }
   
   public static List<Integer> getRoles() {
@@ -33,10 +50,12 @@ public class DatabaseSelectHelper extends DatabaseSelector {
     
   }
    
-  public static String getPassword(int userId)  {
+  public static String getPassword(int userId) throws SQLException {
     //TODO Implement this method as stated on the assignment sheet (Strawberry)
     //hint: You should be using these three lines in your final code
-    Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
+    
+    // Create the database connection
+    Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();    
     String hashPassword = DatabaseSelector.getPassword(userId, connection);
     connection.close();
     return hashPassword;
