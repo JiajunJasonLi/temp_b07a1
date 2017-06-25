@@ -1,7 +1,6 @@
 package com.bank.database;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -180,12 +179,12 @@ public class DatabaseSelector {
    * @return the interest rate.
    * @throws SQLException thrown if something goes wrong with the query.
    */
-  protected static BigInteger getInterestRate(int accountType, Connection connection) 
+  protected static BigDecimal getInterestRate(int accountType, Connection connection) 
       throws SQLException {
     String sql = "SELECT INTERESTRATE FROM ACCOUNTTYPES WHERE ID = ?";
     PreparedStatement preparedStatement = connection.prepareStatement(sql);
     preparedStatement.setInt(1, accountType);
     ResultSet results = preparedStatement.executeQuery();
-    return new BigInteger(results.getString("INTERESTRATE"));
+    return new BigDecimal(results.getString("INTERESTRATE"));
   }
 }

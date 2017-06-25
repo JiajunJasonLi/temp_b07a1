@@ -1,49 +1,32 @@
 package com.bank.databasehelper;
 
+import com.bank.exceptions.ConnectionFailedException;
+import com.bank.exceptions.RecordNotFoundException;
 import com.bank.generics.AccountTypes;
 import com.bank.generics.Roles;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 // A class containing methods to help validate database input
 public class DatabaseValidationHelper {
   
   /**
-   * Checks if the given ID is associated with an existing account.
-   * @param accountId The account ID to examine.
-   * @return validAccounId True if an account with this ID exists.
-   *
-  protected static boolean validateAccountId(int accountId) {
-    boolean validAccountId = true;
-    
-    // Try to access information with this account ID;
-    // if it fails, then ID is invalid
-    try {
-      DatabaseSelectHelper.getBalance(accountId);
-    } catch (SQLException e) {
-      validAccountId = false;
-    }
-    
-    return validAccountId;
-  } **/
-  
-  /**
    * Checks if the given account type ID exists.
    * @param accountTypeId The ID for the account type
-   * @return validAccountTypeId True if the ID exists.
+   * @return validAccountTypeId True if an account type with this ID exists.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  protected static boolean validateAccountTypeId(int accountTypeId) {
-    boolean validAccountTypeId = false;
+  protected static boolean validateAccountTypeId(int accountTypeId) 
+      throws ConnectionFailedException {
+    boolean validAccountTypeId = true;
     
-    // Get all possible account type IDs
-    List<Integer> allAccountTypes = DatabaseSelectHelper.getAccountTypesIds();
-    
-    for (Integer accountType: allAccountTypes) {
-      if (accountType.equals(accountTypeId)) {
-        validAccountTypeId = true;
-      }
-    }
+    // Try to access information for this account type
+    // If record not found, ID is invalid.
+    try {
+      DatabaseSelectHelper.getInterestRate(accountTypeId);
+    } catch (RecordNotFoundException e) {
+      validAccountTypeId = false;
+    } 
     
     return validAccountTypeId;
   }
@@ -67,6 +50,27 @@ public class DatabaseValidationHelper {
     }
     
     return validAccountType;
+  }
+  
+  /**
+   * Checks if the given account ID exists.
+   * @param accountTypeId The ID for the account
+   * @return validAccountTypeId True if an account with this ID exists.
+   * @throws ConnectionFailedException If database connection fails.
+   */
+  protected static boolean validateAccountId(int accountId) 
+      throws ConnectionFailedException {
+    boolean validAccountId = true;
+    
+    // Try to access information for this account type
+    // If record not found, ID is invalid.
+    try {
+      DatabaseSelectHelper.getBalance(accountId);
+    } catch (RecordNotFoundException e) {
+      validAccountId = false;
+    } 
+    
+    return validAccountId;
   }
   
   /**
@@ -107,19 +111,18 @@ public class DatabaseValidationHelper {
    * Checks if the given role ID is associated with an existing role type.
    * @param roleId The role ID to examine.
    * @return validRoleId True if the role ID exists.
+   * @throws ConnectionFailedException If database connection fails.
    */
-  protected static boolean validateRoleId(int roleId) {
-    boolean validRoleId = false;
+  protected static boolean validateRoleId(int roleId) throws ConnectionFailedException {
+    boolean validRoleId = true;
     
-    // Get all possible IDs
-    List<Integer> allUserRoleIds = DatabaseSelectHelper.getRoles();
-    
-    // Check if input role ID is one of the possible ones
-    for (Integer userRoleId: allUserRoleIds) {
-      if (userRoleId.equals(roleId)) {
-        validRoleId = true;
-      }
-    }
+    // Try to access information for this account type
+    // If record not found, ID is invalid.
+    try {
+      DatabaseSelectHelper.getRole(roleId);
+    } catch (RecordNotFoundException e) {
+      validRoleId = false;
+    } 
     
     return validRoleId;
   }
@@ -149,20 +152,21 @@ public class DatabaseValidationHelper {
    * Checks if the given user ID is associated with an existing user.
    * @param userId The user ID to examine.
    * @return validUserId True if a user with this ID exists.
-   *
-  protected static boolean validateUserId(int userId) {
+   * @throws ConnectionFailedException If database connection fails.
+   */
+  protected static boolean validateUserId(int userId) throws ConnectionFailedException {
     boolean validUserId = true;
     
     // Try to access information with this user ID;
     // if it fails, then ID is invalid
     try {
-      DatabaseSelectHelper.getAccountIds(userId);
-    } catch (SQLException e) {
+      DatabaseSelectHelper.getPassword(userId);
+    } catch (RecordNotFoundException e) {
       validUserId = false;
     }
     
     return validUserId;
-  } **/
+  }
   
   /**
    * Checks if the given user address is acceptable. (Ie. 100 characters or less.)
