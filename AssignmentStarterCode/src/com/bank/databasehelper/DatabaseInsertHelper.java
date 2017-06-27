@@ -2,6 +2,7 @@ package com.bank.databasehelper;
 
 import com.bank.database.DatabaseInserter;
 import com.bank.exceptions.ConnectionFailedException;
+import com.bank.exceptions.IllegalAddressException;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -81,28 +82,35 @@ public class DatabaseInsertHelper extends DatabaseInserter {
    * @param password The user's password
    * @return newUserId The new user's ID if the user is successfully added, -1 otherwise
    * @throws ConnectionFailedException If database connection fails.
+   * @throws IllegalAddressException If address does not meet the input requirements.
    */
   public static int insertNewUser(String name, 
-      int age, String address, int roleId, String password) throws ConnectionFailedException {
+      int age, String address, int roleId, String password) 
+          throws ConnectionFailedException, IllegalAddressException {
     // Create the database connection
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
-    // Validate role ID
+    // Validate role ID and address
     boolean validRole = DatabaseValidationHelper.validateRoleId(roleId);
+    boolean validAddress = DatabaseValidationHelper.validateUserAddress(address);
     
-    // If role ID is valid, create the user
-    try {
-      if (validRole) {
-        int newUserId = DatabaseInserter.insertNewUser(name, 
-            age, address, roleId, password, connection);
-        connection.close();
-        return newUserId;
-      } else {
-        connection.close();
-        return -1;
+    if (!validAddress) {
+      throw new IllegalAddressException();
+    } else {
+      // If role ID and address is valid, create the user
+      try {
+        if (validRole) {
+          int newUserId = DatabaseInserter.insertNewUser(name, 
+              age, address, roleId, password, connection);
+          connection.close();
+          return newUserId;
+        } else {
+          connection.close();
+          return -1;
+        }
+      } catch (SQLException e) {
+        throw new ConnectionFailedException();
       }
-    } catch (SQLException e) {
-      throw new ConnectionFailedException();
     }
   }
   

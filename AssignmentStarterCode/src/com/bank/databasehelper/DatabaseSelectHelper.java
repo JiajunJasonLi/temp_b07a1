@@ -160,8 +160,10 @@ public class DatabaseSelectHelper extends DatabaseSelector {
    * @param age The age of the user
    * @param address The address of the user
    * @return newAdmin The Admin object
+   * @throws ConnectionFailedException If database connection fails.
    */
-  private static User createAdmin(int id, String name, int age, String address) {
+  private static User createAdmin(int id, String name, int age, String address) 
+      throws ConnectionFailedException {
     User newAdmin = new Admin(id, name, age, address);
     return newAdmin;
   }
@@ -173,8 +175,10 @@ public class DatabaseSelectHelper extends DatabaseSelector {
    * @param age The age of the user
    * @param address The address of the user
    * @return newTeller The Teller object
+   * @throws ConnectionFailedException If database connection fails.
    */
-  private static User createTeller(int id, String name, int age, String address) {
+  private static User createTeller(int id, String name, int age, String address) 
+      throws ConnectionFailedException {
     User newTeller = new Teller(id, name, age, address);
     return newTeller;
   }
@@ -186,8 +190,10 @@ public class DatabaseSelectHelper extends DatabaseSelector {
    * @param age The age of the user
    * @param address The address of the user
    * @return newCustomer The Customer object
+   * @throws ConnectionFailedException If database connection fails.
    */
-  private static User createCustomer(int id, String name, int age, String address) {
+  private static User createCustomer(int id, String name, int age, String address) 
+      throws ConnectionFailedException {
     User newCustomer = new Customer(id, name, age, address);
     return newCustomer;
   }
@@ -284,8 +290,10 @@ public class DatabaseSelectHelper extends DatabaseSelector {
    * @param name The name of the account
    * @param balance The balance in the account
    * @return newChequingAccount The ChequingAccount object
+   * @throws ConnectionFailedException If database connection fails.
    */
-  private static Account createChequingAccount(int id, String name, BigDecimal balance) {
+  private static Account createChequingAccount(int id, String name, BigDecimal balance) 
+      throws ConnectionFailedException {
     Account newChequingAccount = new ChequingAccount(id, name, balance);
     return newChequingAccount;
   }
@@ -296,8 +304,10 @@ public class DatabaseSelectHelper extends DatabaseSelector {
    * @param name The name of the account
    * @param balance The balance in the account
    * @return newSavingsAccount The SavingsAccount object
+   * @throws ConnectionFailedException If database connection fails.
    */
-  private static Account createSavingsAccount(int id, String name, BigDecimal balance) {
+  private static Account createSavingsAccount(int id, String name, BigDecimal balance) 
+      throws ConnectionFailedException {
     Account newSavingsAccount = new SavingsAccount(id, name, balance);
     return newSavingsAccount;
   }
@@ -308,8 +318,10 @@ public class DatabaseSelectHelper extends DatabaseSelector {
    * @param name The name of the account
    * @param balance The balance in the account
    * @return newTfsa The Tfsa object
+   * @throws ConnectionFailedException If database connection fails.
    */
-  private static Account createTfsa(int id, String name, BigDecimal balance) {
+  private static Account createTfsa(int id, String name, BigDecimal balance) 
+      throws ConnectionFailedException {
     Account newTfsa = new Tfsa(id, name, balance);
     return newTfsa;
   }
