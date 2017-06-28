@@ -25,7 +25,7 @@ public class DatabaseInsertHelper extends DatabaseInserter {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Check if the given account type ID is valid
-    boolean validTypeId = DatabaseValidationHelper.validateAccountTypeId(typeId);
+    boolean validTypeId = DatabaseDriverHelper.validateAccountTypeId(typeId);
     
     // If ID is valid, create the account
     try {
@@ -55,8 +55,8 @@ public class DatabaseInsertHelper extends DatabaseInserter {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Check that the name and interest rate is valid
-    boolean validName = DatabaseValidationHelper.validateAccountType(name);
-    boolean validInterestRate = DatabaseValidationHelper.validateAccountInterestRate(interestRate);
+    boolean validName = DatabaseDriverHelper.validateAccountType(name);
+    boolean validInterestRate = DatabaseDriverHelper.validateAccountInterestRate(interestRate);
 
     // If both are valid, create the account type
     try {
@@ -91,8 +91,8 @@ public class DatabaseInsertHelper extends DatabaseInserter {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate role ID and address
-    boolean validRole = DatabaseValidationHelper.validateRoleId(roleId);
-    boolean validAddress = DatabaseValidationHelper.validateUserAddress(address);
+    boolean validRole = DatabaseDriverHelper.validateRoleId(roleId);
+    boolean validAddress = DatabaseDriverHelper.validateUserAddress(address);
     
     if (!validAddress) {
       throw new IllegalAddressException();
@@ -125,7 +125,7 @@ public class DatabaseInsertHelper extends DatabaseInserter {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate role name
-    boolean validRole = DatabaseValidationHelper.validateRoleName(role);
+    boolean validRole = DatabaseDriverHelper.validateRoleName(role);
     
     // If it is, create the new role
     try {

@@ -1,8 +1,14 @@
 package com.bank.bank;
 
 import com.bank.database.DatabaseDriver;
+import com.bank.databasehelper.DatabaseInsertHelper;
+import com.bank.databasehelper.DatabaseSelectHelper;
+import com.bank.exceptions.RecordNotFoundException;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.util.List;
 
 
 public class Bank {
@@ -14,12 +20,68 @@ public class Bank {
    */
   public static void main(String[] argv) {
     Connection connection = DatabaseDriverExtender.connectOrCreateDataBase();
+    
+    //boolean exit = false;
+    //while (!exit) {
     try {
       //ONLY UNCOMMENT THIS ON FIRST RUN!
       //DatabaseDriverExtender.initialize(connection);
       
       //TODO Check what is in argv 
       //If it is -1
+      if (argv[0].equals("-1")) {
+        DatabaseDriverExtender.initialize(connection);
+        
+        // Find the role ID of an Admin
+        int roleId;
+        List<Integer> allRoleIds = DatabaseSelectHelper.getRoles();
+        
+        try {
+          // Iterate over list and find ID corresponding to Admin role
+          for (Integer currentRoleId: allRoleIds) {
+            if (DatabaseSelectHelper.getRole(currentRoleId).equalsIgnoreCase("ADMIN")) {
+              // Once found, create the Admin user
+              roleId = currentRoleId;
+              DatabaseInsertHelper.insertNewUser("ROOT", 0, "", roleId, "ADMINISTRATOR");
+            }
+          }
+        } catch (RecordNotFoundException e) {
+          // Should not be possible as role IDs being used with getRole were 
+          // retrieved from database. So should all be valid.
+          System.out.println("Invalid role ID.");
+        }
+        
+        // read user input using BufferedReader and InputStreamReader objects
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(isr);
+        
+        // take in user input
+        String inputStr = br.readLine();
+        
+      } else if (argv[0].equals("1")) {
+        // read user input using BufferedReader and InputStreamReader objects
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(isr);
+        
+        System.out.println("You have chosen to log in as an administrator.");
+        
+        // Take their user ID
+        System.out.println("Please enter your user ID: ");
+        String name = br.readLine();
+        
+        // Take their password
+        System.out.println("Please enter your password: ");
+        String password = br.readLine();
+        
+        // Attempt to log in with this combination
+        
+      } else {
+        // read user input using BufferedReader and InputStreamReader objects
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(isr);
+        
+        String inputStr = br.readLine();
+      }
       /*
        * TODO This is for the first run only!
        * Add this code:
@@ -98,6 +160,7 @@ public class Bank {
         System.out.println("Looks like it was closed already :)");
       }
     }
-    
+      
+    //}
   }
 }

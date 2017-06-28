@@ -27,8 +27,8 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate role name and user ID
-    boolean validName = DatabaseValidationHelper.validateRoleName(name);
-    boolean validUserId = DatabaseValidationHelper.validateUserId(id);
+    boolean validName = DatabaseDriverHelper.validateRoleName(name);
+    boolean validUserId = DatabaseDriverHelper.validateUserId(id);
     
     if (!validName) {
       throw new RecordNotFoundException("Role not found.");
@@ -66,7 +66,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate user ID
-    boolean validUserId = DatabaseValidationHelper.validateUserId(id);
+    boolean validUserId = DatabaseDriverHelper.validateUserId(id);
     
     if (!validUserId) {
       throw new RecordNotFoundException("User not found.");
@@ -97,7 +97,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate user ID
-    boolean validUserId = DatabaseValidationHelper.validateUserId(id);
+    boolean validUserId = DatabaseDriverHelper.validateUserId(id);
     
     if (!validUserId) {
       throw new RecordNotFoundException("User not found.");
@@ -128,8 +128,8 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate role and user ID
-    boolean validRoleId = DatabaseValidationHelper.validateRoleId(roleId);
-    boolean validUserId = DatabaseValidationHelper.validateUserId(id);
+    boolean validRoleId = DatabaseDriverHelper.validateRoleId(roleId);
+    boolean validUserId = DatabaseDriverHelper.validateUserId(id);
 
     if (!validRoleId) {
       throw new RecordNotFoundException("Role not found.");
@@ -168,8 +168,8 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate address and user ID
-    boolean validAddress = DatabaseValidationHelper.validateUserAddress(address);
-    boolean validUserId = DatabaseValidationHelper.validateUserId(id);
+    boolean validAddress = DatabaseDriverHelper.validateUserAddress(address);
+    boolean validUserId = DatabaseDriverHelper.validateUserId(id);
     
     if (!validAddress) {
       throw new IllegalAddressException();
@@ -207,7 +207,7 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate account ID
-    boolean validAccountId = DatabaseValidationHelper.validateAccountId(id);
+    boolean validAccountId = DatabaseDriverHelper.validateAccountId(id);
     
     if (!validAccountId) {
       throw new RecordNotFoundException("Account not found.");
@@ -238,8 +238,8 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate account balance and account ID
-    boolean validAccountBalance = DatabaseValidationHelper.validateAccountBalance(balance);
-    boolean validAccountId = DatabaseValidationHelper.validateAccountId(id);
+    boolean validAccountBalance = DatabaseDriverHelper.validateAccountBalance(balance);
+    boolean validAccountId = DatabaseDriverHelper.validateAccountId(id);
     
     if (!validAccountId) {
       throw new RecordNotFoundException("Account not found.");
@@ -273,8 +273,8 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate account type and account ID
-    boolean validAccountTypeId = DatabaseValidationHelper.validateAccountTypeId(typeId);
-    boolean validAccountId = DatabaseValidationHelper.validateAccountId(id);
+    boolean validAccountTypeId = DatabaseDriverHelper.validateAccountTypeId(typeId);
+    boolean validAccountId = DatabaseDriverHelper.validateAccountId(id);
     
     if (!validAccountTypeId) {
       throw new RecordNotFoundException("Account type not found.");
@@ -311,8 +311,8 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate account type ID and account type ID
-    boolean validAccountTypeName = DatabaseValidationHelper.validateAccountType(name);
-    boolean validAccountTypeId = DatabaseValidationHelper.validateAccountTypeId(id);
+    boolean validAccountTypeName = DatabaseDriverHelper.validateAccountType(name);
+    boolean validAccountTypeId = DatabaseDriverHelper.validateAccountTypeId(id);
     
     if (!validAccountTypeName || !validAccountTypeId) {
       throw new RecordNotFoundException("Account type not found.");
@@ -347,8 +347,8 @@ public class DatabaseUpdateHelper extends DatabaseUpdater {
     Connection connection = DatabaseDriverHelper.connectOrCreateDataBase();
     
     // Validate interest rate and account type ID
-    boolean validInterestRate = DatabaseValidationHelper.validateAccountInterestRate(interestRate);
-    boolean validAccountTypeId = DatabaseValidationHelper.validateAccountTypeId(id);
+    boolean validInterestRate = DatabaseDriverHelper.validateAccountInterestRate(interestRate);
+    boolean validAccountTypeId = DatabaseDriverHelper.validateAccountTypeId(id);
     
     if (!validInterestRate) {
       throw new IllegalInterestRateException();
